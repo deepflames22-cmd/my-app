@@ -9,6 +9,7 @@ import {
   Image, 
   ActivityIndicator,
   Alert 
+
 } from 'react-native';
 import { Search, ArrowLeft, Phone, MapPin } from 'lucide-react-native';
 
@@ -32,6 +33,8 @@ interface Location {
   service?: Service;
 }
 
+import { useRouter } from "expo-router";
+
 const categories = [
   { key: "all", label: "All Services", icon: "🏛️" },
   { key: "Government Agency", label: "Government Agencies", icon: "🏛️" },
@@ -53,6 +56,7 @@ export default function ServicesScreen() {
   const [locations, setLocations] = useState<Location[]>([]);
   const [loading, setLoading] = useState(true);
   const itemsPerPage = 20;
+  const router = useRouter();
 
   useEffect(() => {
     fetchServices();
@@ -86,11 +90,8 @@ export default function ServicesScreen() {
   };
 
   const handleServiceClick = (location: Location) => {
-    Alert.alert(
-      location.name,
-      `${location.address ? location.address + '\n' : ''}${location.city}, ${location.province}${location.phone ? '\n📞 ' + location.phone : ''}`,
-      [{ text: 'OK' }]
-    );
+    router.push(`/location/${location.id}`);
+  
   };
 
   const handleCategoryClick = (categoryKey: string) => {
